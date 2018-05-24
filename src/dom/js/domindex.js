@@ -109,8 +109,9 @@ if(!res){
                         text:"后退",
                         _id:21,
                         command:"angular",
-                        url:"images/text.png",
+                        url:"images/后退.png",
                         name:"向后走",
+                        iconCls:"icon-nav-back",
                         zldm:"def angular(cmd_vel,speed=50,angle=50):  #角运动\n" +
                         "    angular_speed = abs(speed) *pi/180   # 角速度\n" +
                         "    angular_duration = angle/ speed  # 到达目标的时间\n" +

@@ -164,11 +164,11 @@ let toolAction={
         }else{
             $("#dmq").html("");
         }
-
-        let data="compile&&"+$('#ress').val()+"&&"+localStorage.getItem("wjname");
-        console.log(data);
-        $.get("http://192.168.9.159:8888/"+data,function (err, result) {})
-
+        if(localStorage.getItem("wjname")){
+            let data="compile&&"+$('#ress').val()+"&&"+localStorage.getItem("wjname");
+            console.log(data);
+            $.get("http://192.168.9.159:8888/"+data,function (err, result) {})
+        }
         // if(c.length>0){
         //     $("#dmq").html("<p>"+c.join("<br>")+"</p>");
         // }else{
@@ -178,26 +178,28 @@ let toolAction={
     run:function(){
         // let c=scene.getConnectCommand();
         // c=c.reverse();//c为命令数组 把这个数组发送到后台机器人
-        let data="run&&"+$('#ress').val()+"&&"+localStorage.getItem("wjname");
-        console.log(data);
-        // $.ajax({
-        //     type:"get",
-        //         url:"http://192.168.9.159:8888/",
-        //         data:data,
-        //         dataType: "text",
-        //         // jsonp:'callback',
-        //         success:function(data){
-        //             console.log(data);
-        //             if(data){
-        //                 alert('保存成功')
-        //             }
-        //         }
-        // })
-        $.get("http://192.168.9.159:8888/"+data,function (err, result) {
-            console.log(err);
-            console.log(result);
-            $("#rzmain").html(err.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, ' '))
-        })
+        if(localStorage.getItem("wjname")){
+            let data="run&&"+$('#ress').val()+"&&"+localStorage.getItem("wjname");
+            console.log(data);
+            // $.ajax({
+            //     type:"get",
+            //         url:"http://192.168.9.159:8888/",
+            //         data:data,
+            //         dataType: "text",
+            //         // jsonp:'callback',
+            //         success:function(data){
+            //             console.log(data);
+            //             if(data){
+            //                 alert('保存成功')
+            //             }
+            //         }
+            // })
+            $.get("http://192.168.9.159:8888/"+data,function (err, result) {
+                console.log(err);
+                console.log(result);
+                $("#rzmain").html(err.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, ' '))
+            })
+        }
     },
     help:function () {
 
