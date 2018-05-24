@@ -1,0 +1,51 @@
+{
+  "name": "actionedit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "fy",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-latest": "^6.24.1",
+    "bootstrap-loader": "^2.2.0",
+    "bootstrap-sass": "^3.3.7",
+    "copy-webpack-plugin": "^4.5.1",
+    "css-loader": "^0.28.11",
+    "express": "^4.16.3",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "jquery": "^3.3.1",
+    "less": "^3.0.2",
+    "less-loader": "^4.1.0",
+    "node-sass": "^4.8.3",
+    "resolve-url-loader": "^2.3.0",
+    "sass-loader": "^7.0.1",
+    "style-loader": "^0.21.0",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.14",
+    "wing": "0.0.2"
+  },
+  "directories": {
+    "example": "example"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootstrap-treeview": "^1.2.0",
+    "bower": "^1.8.4",
+    "css-loader": "^0.28.11",
+    "expose-loader": "^0.7.5",
+    "file-loader": "^1.1.11",
+    "fs": "0.0.1-security",
+    "node.js": "0.0.0",
+    "popper.js": "^1.14.3",
+    "style-loader": "^0.21.0",
+    "url-loader": "^1.0.1",
+    "url.js": "^1.0.3"
+  }
+}

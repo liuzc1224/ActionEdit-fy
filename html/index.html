@@ -1,0 +1,396 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title></title>
+        <style type="text/css">
+
+        </style>
+        <script src="../dist/main.js"></script>
+    </head>
+    <body>
+    <input type="file" id="files" accept="application/xml" style="display: none">
+    <div class="outer">
+        <nav class="navbar navbar-default">
+            <div class="mcontainer-fluid">
+                <!-- Brand and toggle get grouped for better mobile display-->
+                <!--<div class="navbar-header">-->
+                    <!--&lt;!&ndash;<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span class="sr-only">Toggle navigation</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span class="icon-bar"></span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span class="icon-bar"></span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span class="icon-bar"></span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                    <!--<a class="navbar-brand" href="#"><img src="images/logo.png" style="height: 30px;margin-top: -5px"></a>-->
+
+                <!--</div>-->
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div id="bs-example-navbar-collapse-1">
+                    <ul style="list-style-type: none" id="cd">
+                        <!--<li>-->
+                            <!--<a class="navbar-brand" href="#" style="margin-top: 5px"><img src="images/logo.png" style="height: 30px;margin-top: -5px"></a>-->
+                        <!--</li>-->
+                        <li class="dropdown cd">
+                            <a id="wjLabel" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">文件 <span class="caret"></span></a>
+                            <ul class="dropdown-menu" style="margin-top: -15px;" aria-labelledby="wjLabel">
+                                <li>
+                                    <a href="#" class="new">新项目</a>
+                                </li>
+                                <li>
+                                    <a href="#" id="open">打开项目</a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="#" class="wjsave">保存项目</a>
+                                </li>
+                                <li>
+                                    <a href="#">项目保存为</a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="#">退出</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="cd" id="zlku">
+                            <a href="#">指令盒库</a>
+                        </li>
+                        <li class="cd" id="compile">
+                            <a href="#">编译</a>
+                        </li>
+                        <li class="cd" id="run">
+                            <a href="#">运行</a>
+                        </li>
+                        <li role="presentation" class="help dropdown cd">
+                            <a id="settLabel" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">设置</a>
+                            <ul class="dropdown-menu" style="margin-top: -15px;" aria-labelledby="settLabel">
+                                <li>
+                                    <a href="#" id="Address">工程目录</a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="#">关于</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li role="presentation" class="help dropdown cd">
+                            <a id="helpLabel" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">帮助</a>
+                            <ul class="dropdown-menu" style="margin-top: -15px;" aria-labelledby="helpLabel">
+                                <li>
+                                    <a href="#">键盘快捷方式</a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="#">查看数据</a>
+                                </li>
+                                <li>
+                                    <a href="#">程序说明书</a>
+                                </li>
+                                <li>
+                                    <a href="#">API参考</a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="#">关于</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div style="width: 100%;height: 1px;background-color: #E0EEEE"></div>
+            <div style="clear: both;"></div>
+            <div id="tb">
+                <ul>
+                    <li class="new" title="新建">
+                        <a><i class="nav-icon icon-nav-new"></i></a>
+                    </li>
+                    <li class="open" title="打开">
+                        <a><i class="nav-icon icon-nav-open"></i></a>
+                    </li>
+                    <li class="save" title="保存">
+                        <a href="#"><i class="nav-icon icon-nav-save"></i></a>
+                    </li>
+
+                    <li class="back" title="撤销上一个操作">
+                        <a><i class="nav-icon icon-nav-undo"></i></a>
+                    </li>
+                    <li class="forward" title="重做上一个操作">
+                        <a><i class="nav-icon icon-nav-redo"></i></a>
+                    </li>
+
+                    <li  class="compile" title="编译">
+                        <a><i class="nav-icon icon-nav-compile"></i></a>
+                    </li>
+                    <li class="run" title="运行">
+                        <a><i class="nav-icon icon-nav-run"></i></a>
+                    </li>
+                </ul>
+                <!-- /.navbar-collapse -->
+            </div>
+            <button style="float: right;margin-top: -7px;font-family:Georgia;" type="button" id="jump" class="btn btn-primary  btn-sm">跳转</button>
+       
+            <!-- /.container-fluid -->
+        </nav>
+        <div class="main">
+            <div class="left">
+                <!-- Nav tabs -->
+                <!--<div style="height: 2px;"></div>-->
+                <ul class="nav nav-tabs nav-tabs-sm" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#home" aria-controls="home" role="tab" data-toggle="tab">基础控件</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" id="zdymain">自定义控件</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">搜索</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="home">
+                        <div id="tree"></div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="profile">
+
+                        <div id="zdykj"></div>
+                        <!-- Button trigger modal -->
+                        <button id="add" type="button" class="btn btn-primary  btn-sm" data-toggle="modal" data-target="#myModal">添加控件</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" tabindex="-1"  aria-hidden="true" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">新增控件</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table>
+                                            <tr>
+                                                <td>控件名称：</td>
+                                                <td><input type="text" class="form-control" id="name" maxlength="5" placeholder="控件名称"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>图片：</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <img id="tp" src="images/text.png"/>
+                                                        </button>
+                                                        <ul class="dropdown-menu" id="img">
+                                                            <li><img src="images/text.png"/></li>
+                                                            <li role="separator" class="divider"></li>
+                                                            <li><img src="images/in.png"/></li>
+                                                            <li role="separator" class="divider"></li>
+                                                            <li><img src="images/out.png"/></li>
+                                                            <li role="separator" class="divider"></li>
+                                                            <li><img src="images/text.png"/></li>
+                                                            <li role="separator" class="divider"></li>
+                                                            <li><img src="images/in.png"/></li>
+                                                            <li role="separator" class="divider"></li>
+                                                            <li><img src="images/out.png"/></li>
+                                                            <li role="separator" class="divider"></li>
+                                                            <li><img src="images/text.png"/></li>
+                                                            <li role="separator" class="divider"></li>
+                                                            <li><img src="images/in.png"/></li>
+                                                            <li role="separator" class="divider"></li>
+                                                            <li><img src="images/out.png"/></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div id="tbdz" style="display: none">images/text.png</div>
+                                                    <div id="ysid" style="display: none"></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>函数名：</td>
+                                                <td><input type="text" class="form-control" id="hsm" placeholder="函数名"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>指令代码：</td>
+                                                <td>
+                                                    <textarea class="form-control" placeholder="控件指令" id="zl" style="height: 150px"></textarea>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary" id="qd">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="messages">
+                        <div style="height: 5px;"></div>
+                        <div class="input-group">
+                            <input type="text" id="sosuo" class="form-control" placeholder="控件名称"><span id="search" class="input-group-addon btn btn-primary"><span  class="glyphicon glyphicon-search"></span></span>
+                        </div>
+                        <div id="su"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="maincenter">
+                <div id="center">
+                    <canvas id="viewer"></canvas>
+                </div>
+                <div id="rz">
+                    <div style="background-color: #E0EEEE;text-indent: 10px;height: 20px;margin-top:-20px;font-size: 10px;line-height: 20px;"><span style="color: #337ab7">调试窗口</span><a href="#" style="float: right;right:10px;line-height: 20px;" type="button" class="glyphicon glyphicon-remove"></a></div>
+                    <div id="rzmain">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="right">
+                <table>
+                    <tr><td style="border-bottom: 1px solid #dddddd;">
+                        <div id="commandshow">
+                            <p style="text-indent: 10px;background-color:#dddddd; color: #337ab7;font-size: 10px;line-height: 20px;"><span>代码区</span></p>
+                            <div class="container-fluid">
+                                <div class="accordion" id="dmq">
+                                </div>
+                            </div>
+                        </div>
+                    </td></tr>
+                    <tr><td>
+                        <p style="text-indent: 10px;background-color:#dddddd; text-align: left;color: #337ab7;font-size: 10px;line-height: 20px;"><span>动画区</span></p>
+                        <img src="images/123.jpg"></td></tr>
+                </table>
+            </div>
+        </div>
+        <!--<div class="modal fade bs-example-modal-sm" id="jckjzl" tabindex="-1"  aria-hidden="true" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">-->
+            <!--<div class="modal-dialog modal-sm" role="document">-->
+                <!--<div class="modal-content">-->
+                    <!--<div class="modal-header">-->
+                        <!--<input id="jckjid" style="display: none">-->
+                        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                        <!--<h4 class="modal-title" id="jckjzlLabel"></h4>-->
+                    <!--</div>-->
+                    <!--<div class="modal-body" id="jckjzlBody">-->
+                    <!--</div>-->
+                    <!--<div class="modal-footer">-->
+                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>-->
+                        <!--<button type="button" class="btn btn-primary" id="jcqd">确定</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="modal fade" id="zdykjzl" tabindex="-1"  aria-hidden="true" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <input id="zdykjid" style="display: none">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="zdykjzlLabel"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <textarea  class="form-control" id="zdykjzlBody"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="zdyqd">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myAddress" tabindex="-1"  aria-hidden="true" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myAddressLabel">存储路径</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" id="ress" placeholder="存储路径" value="/home/kkk/tttt/">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="qdAdress">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="save" tabindex="-1"  aria-hidden="true" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="saveLabel">文件保存</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" id="savename" placeholder="文件名称">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="wjsave">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="newwj" tabindex="-1"  aria-hidden="true" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="newLabel">创建一个新项目</h4>
+                    </div>
+                    <div class="modal-body">
+                       <p>当前项目中的最后修改可能会丢失。</p>
+                        <p>您想先保存当前项目吗？</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="newwjsave">保存</button>
+                        <button type="button" class="btn btn-default" id="pq">抛弃</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul id="wrapper">
+            <li>
+                <a id="edit">编辑</a>
+            </li>
+            <li>
+                <a id="del">删除</a>
+            </li>
+        </ul>
+        <ul id="wrapper1">
+            <li>
+                <a id="edit1">编辑</a>
+            </li>
+            <li>
+                <a id="del1">删除</a>
+            </li>
+        </ul>
+        <script>
+
+        </script>
+        
+
+    </div>
+    <div class="divwin">
+        <div class="win_header">
+            <a class="icon-win-close"></a>
+        </div>
+        <div class="win-center">
+            <div>剪切</div>
+            <div>粘贴</div>
+            <div>全选</div>
+        </div>
+        <div class="win-bottom">
+
+        </div>
+    </div>
+    <script>
+
+    </script>
+    </body>
+</html>
