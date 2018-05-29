@@ -294,7 +294,7 @@
                         <textarea  class="form-control" id="zdykjzlBody"></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-default" id="qx" data-dismiss="modal">取消</button>
                         <button type="button" class="btn btn-primary" id="zdyqd">确定</button>
                     </div>
                 </div>
@@ -354,6 +354,26 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade bs-example-modal-sm" id="variable" tabindex="-1"  aria-hidden="true" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">变量设置</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div style="display: none" id="num"></div>
+                        <table id="varcenter"></table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="blsave">保存</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <ul id="wrapper">
             <li>
                 <a id="edit">编辑</a>
@@ -364,10 +384,13 @@
         </ul>
         <ul id="wrapper1">
             <li>
-                <a id="edit1">编辑</a>
+                <a id="blset">设置变量</a>
             </li>
             <li>
                 <a id="del1">删除</a>
+            </li>
+            <li>
+                <a id="edit1">编辑指令</a>
             </li>
         </ul>
         <script>

@@ -4,8 +4,8 @@
 import "../../src/dom/js/domindex";
 
 
-import ButtonInput from "../../src/viewer/drawing/ButtonInput";
-import ButtonOutput from "../../src/viewer/drawing/ButtonOutput";
+import Setting from "../../src/viewer/drawing/Setting";
+import ButtonOut1 from "../../src/viewer/drawing/ButtonOut1";
 import Scene from "../../src/viewer/core/Scene";
 import BaseObject from "../../src/viewer/core/BaseObject";
 import TextMaterial from "../../src/viewer/materials/TextMaterial";
@@ -39,8 +39,8 @@ object.addMaterial(new TextMaterial(new Vector2(),"测试","20px SimSun"));
   imgObj.src = img;
 
 object.path=new HookedPath();
-object.btnin=new ButtonInput();
-object.btnout=new ButtonOutput();
+object.btnin=new Setting();
+object.btnout=new ButtonOut1();
 object.width=120;
 object.height=120;
 scene.add(object);

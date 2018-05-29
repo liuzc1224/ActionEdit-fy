@@ -6,6 +6,10 @@ import ImgMatrial from "../materials/ImgMaterial";
 import RectBoundPath from "../path/RectBoundPath.js";
 import ButtonOut from "../drawing/ButtonOut.js";
 import ButtonIn from "../drawing/ButtonIn.js";
+import ButtonOut1 from "../drawing/ButtonOut1.js";
+import ButtonIn1 from "../drawing/ButtonIn1.js";
+import tpurl from "../../images/加.png";
+import Setting from "./Setting";
 
 class DrawObject extends BaseObject{
     constructor(pos,node,id){
@@ -44,10 +48,57 @@ class DrawObject extends BaseObject{
         this.add(outb);
         this.btnin=inb;
         this.btnout=outb;
-        if(node.jckj){
-            this.jckj=node.jckj;
+        var obj=this;
+        if(node.variable){
+            this.variable=node.variable;
+            let setting=new Setting(new Vector2(-13,16));
+            this.add(setting);
+            this.setting=setting;
+            var imgObj = new Image();
+            imgObj.onload = function(){
+
+                obj.addMaterial(new ImgMatrial(new Vector2(-8,-18),this));
+
+            };
+            imgObj.src = node.url;
+            this.img=node.url;
         }else{
-            this.jckj=node.zldm;
+            var imgObj = new Image();
+            imgObj.onload = function(){
+
+                obj.addMaterial(new ImgMatrial(new Vector2(-10,-10),this));
+
+            };
+            imgObj.src = node.url;
+            this.img=node.url;
+        }
+        if(node.style==="if"){
+            let outb1=new ButtonOut1(new Vector2(60,-5));
+            this.add(outb1);
+            this.btnout1=outb1;
+            this.style=node.style;
+        }else{
+            var imgObj4 = new Image();
+            imgObj4.onload = function(){
+
+                obj.addMaterial(new ImgMatrial(new Vector2(50,-15),this));
+
+            };
+            imgObj4.src = tpurl;
+        }
+        if(node.style==="while"){
+            let inb1=new ButtonIn1(new Vector2(-45,-5));
+            this.add(inb1);
+            this.btnin1=inb1;
+            this.style=node.style;
+        }else{
+            var imgObj2 = new Image();
+            imgObj2.onload = function(){
+
+                obj.addMaterial(new ImgMatrial(new Vector2(-55,-15),this));
+
+            };
+            imgObj2.src = tpurl;
         }
         if(node.uid){
             this.sjid=node.uid;
@@ -57,22 +108,7 @@ class DrawObject extends BaseObject{
         }
 
         this.kjid=id;
-        // if(node.jcbl){
-        //     this.jcbl=node.jcbl;
-        // }else{
-        //     this.jcbl="";
-        // }
-        // if(localStorage.getItem("sx")){
-        //     localStorage.setItem("sx",parseInt(localStorage.getItem("sx"))+1);
-        // }else{
-        //     localStorage.setItem("sx",1);
-        // }
         let zl=node.zldm;
-        // zl=zl.substring(0,zl.indexOf("(")).replace(/\d+$/,'')+localStorage.getItem("sx")+zl.substring(zl.indexOf("("),zl.length);
-        // let count = getlen(zl.toString(),'$');
-        // if(count!=0){
-        //     zl=zl.replace(/\$/g,"10")
-        // }
         this.command=node.command;
         this.zldm=zl;
         this.name=node.name;
@@ -89,16 +125,24 @@ class DrawObject extends BaseObject{
             this.addMaterial(new TextMaterial(new Vector2(-10,-25),node.name,"12px SimSun"));
         }
 
-
-        //创建image对象
-        var imgObj = new Image();
         var obj=this;
-        imgObj.onload = function(){
+        //创建image对象
+        var imgObj1 = new Image();
+        imgObj1.onload = function(){
 
-            obj.addMaterial(new ImgMatrial(new Vector2(-10,-10),this));
-            
+            obj.addMaterial(new ImgMatrial(new Vector2(-55,5),this));
+
         };
-        imgObj.src = node.url;
+        imgObj1.src = tpurl;
+
+        var imgObj3 = new Image();
+        imgObj3.onload = function(){
+
+            obj.addMaterial(new ImgMatrial(new Vector2(50,5),this));
+
+        };
+        imgObj3.src = tpurl;
+
     }
     clearConnect(){
         let nexts,lasts;

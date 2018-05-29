@@ -84,8 +84,9 @@ if(!res){
                         command:"linear",
                         url:"images/前进.png",
                         name:"向前走",
+                        variable:{"speed":"0.2","distance":"1.0"},
                         iconCls:"icon-nav-forward",
-                        zldm:"def linear(cmd_vel,speed=0.2,distance=1.0):  #线运动\n" +
+                        zldm:"def linear(cmd_vel,speed=$,distance=$):  #线运动\n" +
                         "    linear_speed = abs(speed)   # 线速度\n" +
                         "    linear_duration = distance / speed  # 到达目标的时间\n" +
                         "    move_cmd = Twist()\n" +
@@ -175,6 +176,7 @@ if(!res){
                         text:"if",
                         _id:12,
                         command:"",
+                        style:"if",
                         url:"images/text.png",
                         name:"if",
                         zldm:""
@@ -189,6 +191,7 @@ if(!res){
                         text:"While()",
                         _id:32,
                         command:"",
+                        style:"while",
                         url:"images/text.png",
                         name:"While()",
                         zldm:""

@@ -4,10 +4,10 @@ import Vector2 from "../math/Vector2";
 import ImgMatrial from "../materials/ImgMaterial";
 import inpng from "../../images/out.png";
 import Bezier from "../math/Bezier";
-class ButtonOut extends BaseObject{
+class ButtonOut1 extends BaseObject{
     constructor(position){
         super();
-        this.type="output";
+        this.type="output1";
         this.position=position?position:new Vector2();
         this.nexts=[];
 
@@ -151,4 +151,4 @@ class ButtonOut extends BaseObject{
         return cnexts;
     }
 }
-export default ButtonOut;
+export default ButtonOut1;

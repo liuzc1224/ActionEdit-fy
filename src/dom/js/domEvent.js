@@ -182,7 +182,7 @@ let eventObject={
                     for(let i=0;i<arr.length;i++) {
                         $("#zdy" + i + "").mouseover(function () {
                             localStorage.setItem('zdykjid',i)
-                        })
+                        });
                         $("#zdy" + i + "").mousedown(function(e) {
 
                             if (3 == e.which) {
@@ -217,7 +217,7 @@ let eventObject={
                 for(let i=0;i<arr.length;i++) {
                     $("#zdy" + i + "").mouseover(function () {
                         localStorage.setItem('zdykjid',i)
-                    })
+                    });
                     $("#zdy" + i + "").mousedown(function(e) {
 
                         if (3 == e.which) {
@@ -275,11 +275,26 @@ let eventObject={
         });
         $('#edit1').click(function () {
             let object=scene.obj().children[localStorage.getItem('object')];
+            let str=object.zldm;
             // if(object.kjid.length==10){
-                $('#zdykjzl').modal('show');
-                $('#zdykjid').val(object.sjid);
-                $('#zdykjzlLabel').html(object.name);
-                $('#zdykjzlBody').val(object.zldm.replace(/<br\/>/g, ' \n ' ));
+            console.log(object);
+            if(object.variable){
+                let arr=Object.keys(object.variable);
+                for(let i=0;i<arr.length;i++){
+                    console.log(object.variable[arr[i]]);
+                    str=str.replace(/\$/, object.variable[arr[i]]);
+                }
+            }
+            if(object.kjid.length===10){
+                $("#zdyqd").show();
+            }else{
+                $("#zdyqd").hide();
+            }
+            console.log(str);
+            $('#zdykjzl').modal('show');
+            $('#zdykjid').val(object.sjid);
+            $('#zdykjzlLabel').html(object.name);
+            $('#zdykjzlBody').val(str.replace(/<br\/>/g, ' \n ' ));
             // }else{
             //     function getlen(str,ch){
             //         var ret=0;
@@ -338,6 +353,7 @@ let eventObject={
                     window.scene = new Scene(canvas);
                     scene.isShowBounds = true;
                     let arr=JSON.parse(this.result);
+                    //let arr=JSON.parse(localStorage.getItem("sxx"));
                     if(arr.tx.length>0){
                         for(let k=0;k<arr.tx.length;k++){
                             let pos=new Vector2(arr.tx[k].x,arr.tx[k].y);
@@ -349,46 +365,115 @@ let eventObject={
                         for(let i=0;i<arr.id.length;i++){
                             let jzid=Object.keys(arr.id[i])[0];
                             if(jzid==="btin"){
-                                for(let k=0;k<arr.id[i][jzid].length;k++) {
-                                    if(arr.id[i][jzid][k]==="btnin"){
-                                        let e={
-                                            nextput:c.btnin
-                                        };
-                                        c.btnin.lasts.push(c.btnout);
-                                        c.btnout.nexts.push(e);
-                                    }else{
-                                        for(let m=0;m<c.children.length;m++) {
-                                            if (c.children[m].sjid === arr.id[i][jzid][k]) {
-                                                let e={
-                                                    nextput:c.children[m].btnin
-                                                };
-                                                c.btnout.nexts.push(e);
+                                let a=arr.id[i][jzid];
+                                if(a["bt"]){
+                                    for(let k=0;k<a["bt"].length;k++) {
+                                        if(a["bt"][k]==="btnin"){
+                                            let e={
+                                                nextput:c.btnin
+                                            };
+                                            c.btnin.lasts.push(c.btnout);
+                                            c.btnout.nexts.push(e);
+                                        }else{
+                                            for(let m=0;m<c.children.length;m++) {
+                                                if (c.children[m].sjid === a["bt"][k]) {
+                                                    let e={
+                                                        nextput:c.children[m].btnin
+                                                    };
+                                                    c.btnout.nexts.push(e);
+                                                }
                                             }
                                         }
                                     }
                                 }
-                            }else{
-                                let kj="";
-                                for(let h=0;h<c.children.length;h++) {
-                                    if (c.children[h].sjid === jzid) {
-                                        kj=c.children[h].btnout;
+                                if(a["bt1"]){
+                                    for(let k=0;k<a["bt1"].length;k++) {
+                                        if(a["bt1"][k]==="btnin"){
+                                            let e={
+                                                nextput:c.btnin1
+                                            };
+                                            c.btnin1.lasts.push(c.btnout);
+                                            c.btnout.nexts.push(e);
+                                        }else{
+                                            for(let m=0;m<c.children.length;m++) {
+                                                if (c.children[m].sjid === a["bt"][k]) {
+                                                    let e={
+                                                        nextput:c.children[m].btnin1
+                                                    };
+                                                    c.btnout.nexts.push(e);
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-                                for(let k=0;k<arr.id[i][jzid].length;k++) {
-                                    if(arr.id[i][jzid][k]==="btnin"){
-                                        console.log("1");
-                                        let e={
-                                            nextput:c.btnin
-                                        };
-                                        c.btnin.lasts.push(kj);
-                                        kj.nexts.push(e);
-                                    }else{
-                                        for(let m=0;m<c.children.length;m++) {
-                                            if (c.children[m].sjid === arr.id[i][jzid][k]) {
-                                                let e={
-                                                    nextput:c.children[m].btnin
+                            }else {
+                                let kj = "";
+                                let aa = arr.id[i][jzid];
+                                for (let h = 0; h < c.children.length; h++) {
+                                    if (c.children[h].sjid === jzid) {
+                                        kj = c.children[h];
+                                    }
+                                }
+                                if (aa["out"]["bin"]) {
+                                    for (let i = 0; i < aa["out"]["bin"].length; i++) {
+                                        if (aa["out"]["bin"][i] === "btnin") {
+                                            let e = {
+                                                nextput: c.btnin
+                                            };
+                                            c.btnin.lasts.push(kj);
+                                            kj.btnout.nexts.push(e);
+                                        } else {
+                                            for (let m = 0; m < c.children.length; m++) {
+                                                if (c.children[m].sjid === aa["out"]["bin"][i]) {
+                                                    let e = {
+                                                        nextput: c.children[m].btnin
+                                                    };
+                                                    kj.btnout.nexts.push(e);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if (aa["out"]["bin1"]) {
+                                    for (let i = 0; i < aa["out"]["bin1"].length; i++) {
+                                        for (let m = 0; m < c.children.length; m++) {
+                                            if (c.children[m].sjid === aa["out"]["bin1"][i]) {
+                                                let e = {
+                                                    nextput: c.children[m].btnin1
                                                 };
-                                                kj.nexts.push(e);
+                                                kj.btnout.nexts.push(e);
+                                            }
+                                        }
+                                    }
+                                }
+                                if (aa["out1"]["bin"]) {
+                                    for (let i = 0; i < aa["out1"]["bin"].length; i++) {
+                                        if (aa["out1"]["bin"][i] === "btnin") {
+                                            let e = {
+                                                nextput: c.btnin
+                                            };
+                                            c.btnin.lasts.push(kj);
+                                            kj.btnout1.nexts.push(e);
+                                        } else {
+                                            for (let m = 0; m < c.children.length; m++) {
+                                                if (c.children[m].sjid === aa["out1"]["bin"][i]) {
+                                                    let e = {
+                                                        nextput: c.children[m].btnin
+                                                    };
+                                                    kj.btnout1.nexts.push(e);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if (aa["out1"]["bin1"]) {
+                                    for (let i = 0; i < aa["out1"]["bin1"].length; i++) {
+                                        for (let m = 0; m < c.children.length; m++) {
+                                            if (c.children[m].sjid === aa["out1"]["bin1"][i]) {
+                                                let e = {
+                                                    nextput: c.children[m].btnin1
+                                                };
+                                                kj.btnout1.nexts.push(e);
                                             }
                                         }
                                     }
@@ -401,62 +486,17 @@ let eventObject={
         }
 
         $("#wjsave").click(function () {
-            let arr=[];
-            let arr1=[];
-            let c=scene.obj().children;
-            if(c.length>2){
-                for(let i=0;i<c.length;i++){
-                    if(c[i].name){
-                        let o=c[i].materials[1].sources.outerHTML.indexOf('"')+1;
-                        let t=c[i].materials[1].sources.outerHTML.indexOf('"',o);
-                        let kj={"uid":c[i].sjid,"name":c[i].name,"url":c[i].materials[1].sources.outerHTML.substring(o,t),"zldm":c[i].zldm,"id":c[i].kjid,"command":c[i].command,"jckj":c[i].jckj,"x":c[i].position.x,"y":c[i].position.y};
-                        arr.push(kj);
-                    }
-                }
-            }
-            let e=scene.obj();
-            for(let c of e.children){
-                if(c.type==="container"){
-                    if(c.btnout.nexts.length>0){
-                        let array=[];
-                        for(let n=0;n<c.btnout.nexts.length;n++){
-                            if(c.btnout.nexts[n].nextput.parent.type==="scene"){
-                                array.push("btnin");
-                            }
-                            if(c.btnout.nexts[n].nextput.parent.type==="container"){
-                                array.push(c.btnout.nexts[n].nextput.parent.sjid);
-                            }
-                        }
-                        let uid=c.sjid;
-                        let a={};
-                        a[uid]=array;
-                        arr1.push(a)
-                    }
-                }
-                if(c.type==="output"){
-                    if(e.btnout.nexts.length>0){
-                        let btout=[];
-                        console.log(e.btnout.nexts[0]);
-                        for(let n=0;n<e.btnout.nexts.length;n++){
-                            if(e.btnout.nexts[n].nextput.parent.type==="scene"){
-                                btout.push("btnin");
-                            }
-                            if(e.btnout.nexts[n].nextput.parent.type==="container"){
-                                btout.push(e.btnout.nexts[n].nextput.parent.sjid);
-                            }
-                        }
-                        arr1.push({"btin":btout})
-                    }
-                }
-            }
-            let m={"tx":arr,"id":arr1};
+            let m=scene.save();
+            console.log(m);
+            //localStorage.setItem("sxx",JSON.stringify(m));
+            // console.log(localStorage.getItem("sxx"));
             let zl=scene.getConnectCommand();
             zl=zl.reverse();
             let str="";
             for(let i=0;i<zl.length;i++){
                 str+="index\n"+i+"\nname"+zl[i].command+"\ncontent"+"\n"+zl[i].zldm;
             }
-            console.log(str);
+            //console.log(str);
             let data={
                 dz:$('#ress').val(),
                 mc:$("#savename").val(),
@@ -469,31 +509,15 @@ let eventObject={
             }else{
                 $("#save").modal('hide');
                 $("#savename").val("");
-                $.post("http://192.168.9.159:8888/",data,function (err, result) {
-                    console.log(err);
-                    console.log(result);
+                $.post("http://127.0.0.1:8888/",data,function (err, result) {
+                   // console.log(err);
+                    //console.log(result);
                     if(result==="success"){
                         alert("保存成功")
                     }else{
                         alert("保存失败");
                     }
                 })
-                // $.ajax({
-                //     type:"post",
-                //     url:"http://192.168.9.159:8888/",
-                //     data:data,
-                //     dataType: "json",
-                //     success:function(data){
-                //         console.log(data);
-                //         if(data){
-                //             alert('保存成功')
-                //         }
-                //     } ,
-                //     error: function(){
-                //         //请求出错处理
-                //         alert("保存失败")
-                //     }
-                // });
             }
         });
         $(".wjsave").click(function () {
@@ -512,8 +536,21 @@ let eventObject={
         $("#jump").click(function () {
             let data="jump&&"+$('#ress').val()+"&&"+localStorage.getItem("wjname");
             console.log(data);
-            $.get("http://192.168.9.159:8888/"+data,function (err, result) {})
+            $.get("http://127.0.0.1:8888/"+data,function (err, result) {})
+        });
+        $("#blset").click(function () {
+            let object=scene.obj().children[localStorage.getItem('object')];
+            let str=object.variable;
+            let html="";
+            let arr=Object.keys(str);
+            $("#num").html(arr.length);
+            for(let i=0;i<arr.length;i++){
+                html+="<tr><td><span id=name"+i+">"+arr[i]+"</span>:</td><td><input type = \"text\" name= \"price\" id = 'input"+i+"' value='"+str[arr[i]]+"' onkeyup=\"$(this).val($(this).val().replace(/[^\\-?\\d.]/g,'')) \"/></td></tr>"
+            }
+            $("#varcenter").html(html);
+            $("#variable").modal("show");
         })
+
     }
 };
 export default eventObject;

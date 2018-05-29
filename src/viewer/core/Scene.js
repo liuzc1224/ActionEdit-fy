@@ -5,6 +5,8 @@ import util from "../util/util.js";
 import DrawObject from "../drawing/DrawObject.js";
 import ButtonOut from "../drawing/ButtonOut";
 import ButtonIn from "../drawing/ButtonIn.js";
+// import ButtonOut1 from "../drawing/ButtonOut1";
+// import ButtonIn from "../drawing/ButtonIn.js";
 class Scene extends BaseObject{
     constructor(canvas){
         super();
@@ -50,7 +52,6 @@ class Scene extends BaseObject{
     removeDrawO(o){
         let nl;
         nl=o.clearConnect();
-        console.log(nl);
         this.remove(o);
         actionManager.deleteObject(o,nl[0],nl[1]);
     }
@@ -197,9 +198,12 @@ class Scene extends BaseObject{
                     $('#wrapper1').css('display','block');
                     $('#wrapper1').css('left',canvasPoint.x +310+'px');
                     $('#wrapper1').css('top',canvasPoint.y+85+'px');
-                    $("#edit1").attr("disabled",false);
-                    $("#edit1").css("pointer-events","block");
-                    $("#edit1").css("opacity","");
+                    s("#edit1");
+                    if(o.variable){
+                        s("#blset");
+                    }else{
+                        f('#blset');
+                    }
                 }
             }
             let line=this.bezlineMouseTest(canvasPoint);
@@ -207,9 +211,18 @@ class Scene extends BaseObject{
                 $('#wrapper1').css('display','block');
                 $('#wrapper1').css('left',canvasPoint.x +310+'px');
                 $('#wrapper1').css('top',canvasPoint.y+85+'px');
-                $("#edit1").attr("disabled",true);
-                $("#edit1").css("pointer-events","none");
-                $("#edit1").css("opacity","0.2");
+                f('#edit1');
+                f('#blset');
+            }
+            function f(a) {
+                $(a).attr("disabled",true);
+                $(a).css("pointer-events","none");
+                $(a).css("opacity","0.2");
+            }
+            function s(a) {
+                $(a).attr("disabled",false);
+                $(a).css("pointer-events","block");
+                $(a).css("opacity","");
             }
         }
     }
@@ -257,6 +270,22 @@ class Scene extends BaseObject{
                 this.select.renderIndex=100;}
             return;
         }
+        let outputs1=this.outputMouseTest1(canvasPoint);
+        if(outputs1.length>0){
+
+            outputs1[outputs1.length-1].dispatchEvent({
+                type: 'mousedown',
+
+                mouse: canvasPoint
+            });
+
+            this.inputHandler.startDragging(outputs1[outputs1.length-1], new Vector2());
+
+            // outputs[outputs.length].parent.renderIndex=100;
+            if(outputs1[outputs1.length-1].parent.type!="scene"){this.select = outputs1[outputs1.length-1].parent;
+                this.select.renderIndex=100;}
+            return;
+        }
         let inputs=this.inputMouseTest(canvasPoint);
         if(inputs.length>0){
             inputs[inputs.length-1].dispatchEvent({
@@ -269,11 +298,47 @@ class Scene extends BaseObject{
                 this.select.renderIndex=100;}
             return;
         }
+        let inputs1=this.inputMouseTest1(canvasPoint);
+        if(inputs1.length>0){
+            inputs1[inputs1.length-1].dispatchEvent({
+                type: 'mousedown',
+
+                mouse: canvasPoint
+            });
+            this.inputHandler.startDragging(inputs1[inputs1.length-1], new Vector2());
+            if(inputs1[inputs1.length-1].parent.type!="scene"){this.select =inputs1[inputs1.length-1].parent;
+                this.select.renderIndex=100;}
+            return;
+        }
         let line=this.bezlineMouseTest(canvasPoint);
         if(line){
             this.lineSelect=line;
             this.lineSelect.line.strokeStyle="blue";
         }
+        let setting=this.imgMouseTest(canvasPoint);
+        if(setting.length>0){
+            let str=setting[0].variable;
+            let html="";
+            let arr=Object.keys(str);
+            $("#num").html(arr.length);
+            for(let i=0;i<arr.length;i++){
+                html+="<tr><td><span id=name"+i+">"+arr[i]+"</span>:</td><td><input type = \"text\" name= \"price\" id = 'input"+i+"' value='"+str[arr[i]]+"' onkeyup=\"$(this).val($(this).val().replace(/[^\\-?\\d.]/g,'')) \"/></td></tr>"
+            }
+            $("#varcenter").html(html);
+            $("#variable").modal("show");
+            $("#blsave").click(function () {
+                $("#variable").modal("hide");
+                let nn="";
+                for(let i=0;i<arr.length;i++){
+                    nn+='"'+$('#name'+i).html()+'":"'+$('#input'+i).val()+'",';
+                }
+                let ss="{"+nn.substring(0,nn.length-1)+"}";
+                setting[0].variable=JSON.parse(ss);
+                $("#variable").modal("hide");
+            });
+            return;
+        }
+
         if(objects.length!==0){
             let o=objects[objects.length-1];
             o.isShowBounds = true;
@@ -339,10 +404,25 @@ class Scene extends BaseObject{
         for(let o of this.children) {
             if (o.path.isContainPoint(this.ctx, canvasPoint) && o.type == "container") {
                 // if(o.kjid.length==10){
+                    let str=o.zldm;
                     $('#zdykjzl').modal('show');
                     $('#zdykjid').val(o.sjid);
                     $('#zdykjzlLabel').html(o.name);
-                    $('#zdykjzlBody').val(o.zldm.replace(/<br\/>/g, ' \n ' ));
+                    if(o.variable){
+                        let arr=Object.keys(o.variable);
+                        for(let i=0;i<arr.length;i++){
+                            //console.log(o.variable[arr[i]]);
+                            str=str.replace(/\$/, o.variable[arr[i]]);
+                        }
+                    }
+                    if(o.kjid.length===10){
+                        $("#zdyqd").show();
+                    }else{
+                        $("#zdyqd").hide();
+                    }
+                    $('#zdykjzlBody').val(str.replace(/<br\/>/g, ' \n ' ));
+                    //$('#zdykjzlBody').attr("disabled",true);
+
                 // }else{
                 //     function getlen(str,ch){
                 //         var ret=0;
@@ -379,16 +459,16 @@ class Scene extends BaseObject{
                             arr.push(zldm[i].value);
                         }
                     }
-                    if(o.sjid==id){
-                        o.zldm=setzldm;
-                        o.jcbl=arr.join("-");
-                    }
+                    // if(o.sjid==id){
+                    //     o.zldm=setzldm;
+                    //     o.jcbl=arr.join("-");
+                    // }
                     $('#jckjzl').modal('hide');
-                })
+                });
                 $('#zdyqd').click(function () {
                     let setzldm=$('#zdykjzlBody').val();
                     let zdyid=$('#zdykjid').val();
-                    if(o.sjid==zdyid){
+                    if(o.sjid===zdyid){
                         o.zldm=setzldm;
                     }
                     $('#zdykjzl').modal('hide');
@@ -429,6 +509,18 @@ class Scene extends BaseObject{
         }
         return btns;
     }
+    outputMouseTest1(mouse){
+        let btns=[];
+
+        for(let o of this.children){
+            o.btnout1&&o.btnout1.path.isContainPoint(this.ctx,mouse)&&btns.push(o.btnout1);
+        }
+        if(this.btnout1&&this.btnout1.path.isContainPoint(this.ctx,mouse)){
+            btns.push(this.btnout1);
+        }
+        return btns;
+    }
+
     inputMouseTest(mouse){
         let btns=[];
 
@@ -440,6 +532,29 @@ class Scene extends BaseObject{
         }
         return btns;
     }
+    inputMouseTest1(mouse){
+        let btns=[];
+
+        for(let o of this.children){
+            o.btnin1&&o.btnin1.path.isContainPoint(this.ctx,mouse)&&btns.push(o.btnin1);
+        }
+        if(this.btnin1&&this.btnin1.path.isContainPoint(this.ctx,mouse)){
+            btns.push(this.btnin1);
+        }
+        return btns;
+    }
+
+    imgMouseTest(mouse){
+        let btns=[];
+
+        for(let o of this.children){
+            o.setting&&o.setting.path.isContainPoint(this.ctx,mouse)&&btns.push(o);
+        }
+        if(this.setting&&this.setting.path.isContainPoint(this.ctx,mouse)){
+            btns.push(this);
+        }
+        return btns;
+    }
     bezlineMouseTest(mouse){
         let btn;
 
@@ -448,10 +563,18 @@ class Scene extends BaseObject{
                 let n=o.btnout.isOnCurveStroke(this.ctx,mouse);
                 if(n)btn={line:n,o:o.btnout};
             }
+            if(o.btnout1){
+                let n=o.btnout1.isOnCurveStroke(this.ctx,mouse);
+                if(n)btn={line:n,o:o.btnout1};
+            }
         }
         if(this.btnout){
             let n=this.btnout.isOnCurveStroke(this.ctx,mouse);
             if(n)btn={line:n,o:this.btnout};
+        }
+        if(this.btnout1){
+            let n=this.btnout1.isOnCurveStroke(this.ctx,mouse);
+            if(n)btn={line:n,o:this.btnout1};
         }
 
         return btn;
@@ -485,6 +608,108 @@ class Scene extends BaseObject{
     // }
     obj(){
         return this;
+    }
+    save(){
+        let arr=[];
+        let arr1=[];
+        let c=scene.obj().children;
+        if(c.length>2){
+            for(let i=0;i<c.length;i++){
+                if(c[i].name){//,"jckj":c[i].jckj
+                    let kj={"uid":c[i].sjid,"name":c[i].name,"url":c[i].img,"zldm":c[i].zldm,"id":c[i].kjid,"command":c[i].command,"x":c[i].position.x,"y":c[i].position.y,"style":c[i].style,"variable":c[i].variable};
+                    arr.push(kj);
+                }
+            }
+        }
+        let e=scene.obj();
+        for(let c of e.children){
+            if(c.type==="container"){
+                let a={};
+                let a1={};
+                if(c.btnout.nexts.length>0){
+                    let array=[];
+                    let array1=[];
+                    for(let n=0;n<c.btnout.nexts.length;n++){
+                        if(c.btnout.nexts[n].nextput.type==="input"){
+                            if(c.btnout.nexts[n].nextput.parent.type==="scene"){
+                                array.push("btnin");
+                            }
+                            if(c.btnout.nexts[n].nextput.parent.type==="container"){
+                                array.push(c.btnout.nexts[n].nextput.parent.sjid);
+                            }
+                        }
+                        if(c.btnout.nexts[n].nextput.type==="input1"){
+                            if(c.btnout.nexts[n].nextput.parent.type==="scene"){
+                                array1.push("btnin");
+                            }
+                            if(c.btnout.nexts[n].nextput.parent.type==="container"){
+                                array1.push(c.btnout.nexts[n].nextput.parent.sjid);
+                            }
+                        }
+
+                    }
+                    a={"bin":array,"bin1":array1};
+                }
+                if(c.btnout1){
+                    if(c.btnout1.nexts.length>0){
+                        let array=[];
+                        let array1=[];
+                        for(let n=0;n<c.btnout1.nexts.length;n++){
+                            if(c.btnout1.nexts[n].nextput.type==="input"){
+                                if(c.btnout1.nexts[n].nextput.parent.type==="scene"){
+                                    array.push("btnin");
+                                }
+                                if(c.btnout1.nexts[n].nextput.parent.type==="container"){
+                                    array.push(c.btnout1.nexts[n].nextput.parent.sjid);
+                                }
+                            }
+                            if(c.btnout1.nexts[n].nextput.type==="input1"){
+                                if(c.btnout1.nexts[n].nextput.parent.type==="scene"){
+                                    array1.push("btnin");
+                                }
+                                if(c.btnout1.nexts[n].nextput.parent.type==="container"){
+                                    array1.push(c.btnout1.nexts[n].nextput.parent.sjid);
+                                }
+                            }
+
+                        }
+                        a1={"bin":array,"bin1":array1};
+                    }
+                }
+                let uid=c.sjid;
+                let ccc={};
+                ccc[uid]={"out":a,"out1":a1};
+                arr1.push(ccc);
+            }
+            if(c.type==="output"){
+                if(c.nexts.length>0){
+                    let btout=[];
+                    let btout1=[];
+                    for(let n=0;n<c.nexts.length;n++){
+                        if(c.nexts[n].nextput.type==="input"){
+                            if(c.nexts[n].nextput.parent.type==="scene"){
+                                btout.push("btnin");
+                            }
+                            if(c.nexts[n].nextput.parent.type==="container"){
+                                btout.push(c.nexts[n].nextput.parent.sjid);
+                            }
+                        }
+                        if(c.nexts[n].nextput.type==="input1"){
+                            if(c.nexts[n].nextput.parent.type==="scene"){
+                                btout1.push("btnin");
+                            }
+                            if(c.nexts[n].nextput.parent.type==="container"){
+                                btout1.push(c.nexts[n].nextput.parent.sjid);
+                            }
+                        }
+                    }
+                    let aa={"bt":btout,"bt1":btout1};
+                    arr1.push({"btin":aa});
+                }
+            }
+        }
+        let m={"tx":arr,"id":arr1};
+        return m;
     }
 }
 export default Scene;

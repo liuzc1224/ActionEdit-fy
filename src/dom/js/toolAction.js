@@ -19,55 +19,7 @@ let toolAction={
     },
     save:function(){
         if(localStorage.getItem("wjname")){
-            let arr=[];
-            let arr1=[];
-            let c=scene.obj().children;
-            if(c.length>2){
-                for(let i=0;i<c.length;i++){
-                    if(c[i].name){
-                        let o=c[i].materials[1].sources.outerHTML.indexOf('"')+1;
-                        let t=c[i].materials[1].sources.outerHTML.indexOf('"',o);
-                        let kj={"uid":c[i].sjid,"name":c[i].name,"url":c[i].materials[1].sources.outerHTML.substring(o,t),"zldm":c[i].zldm,"id":c[i].kjid,"command":c[i].command,"jckj":c[i].jckj,"x":c[i].position.x,"y":c[i].position.y};
-                        arr.push(kj);
-                    }
-                }
-            }
-            let e=scene.obj();
-            for(let c of e.children){
-                if(c.type==="container"){
-                    if(c.btnout.nexts.length>0){
-                        let array=[];
-                        for(let n=0;n<c.btnout.nexts.length;n++){
-                            if(c.btnout.nexts[n].nextput.parent.type==="scene"){
-                                array.push("btnin");
-                            }
-                            if(c.btnout.nexts[n].nextput.parent.type==="container"){
-                                array.push(c.btnout.nexts[n].nextput.parent.sjid);
-                            }
-                        }
-                        let uid=c.sjid;
-                        let a={};
-                        a[uid]=array;
-                        arr1.push(a)
-                    }
-                }
-                if(c.type==="output"){
-                    if(e.btnout.nexts.length>0){
-                        let btout=[];
-                        console.log(e.btnout.nexts[0]);
-                        for(let n=0;n<e.btnout.nexts.length;n++){
-                            if(e.btnout.nexts[n].nextput.parent.type==="scene"){
-                                btout.push("btnin");
-                            }
-                            if(e.btnout.nexts[n].nextput.parent.type==="container"){
-                                btout.push(e.btnout.nexts[n].nextput.parent.sjid);
-                            }
-                        }
-                        arr1.push({"btin":btout})
-                    }
-                }
-            }
-            let m={"tx":arr,"id":arr1};
+            let m=scene.save();
             let zl=scene.getConnectCommand();
             zl=zl.reverse();
             let str="";
@@ -82,7 +34,7 @@ let toolAction={
             };
             $("#save").modal('hide');
             $("#savename").val("");
-            $.post("http://192.168.9.159:8888/",data,function (err, result) {
+            $.post("http://127.0.0.1:8888/",data,function (err, result) {
                 console.log(err);
                 console.log(result);
                 if(result==="success"){
@@ -91,23 +43,6 @@ let toolAction={
                     alert("保存失败");
                 }
             });
-            // $.ajax({
-            //     type:"post",
-            //     url:"http://192.168.9.159:8888/",
-            //     data:data,
-            //     dataType: "json",
-            //     // jsonp:'callback',
-            //     success:function(data){
-            //         console.log(data);
-            //         if(data){
-            //             alert('保存成功')
-            //         }
-            //     } ,
-            //     error: function(){
-            //         //请求出错处理
-            //         alert("保存失败")
-            //     }
-            // });
         }else{
             $("#save").modal('show');
             $("#savename").val("");
@@ -132,8 +67,6 @@ let toolAction={
         //     fake_click(save_link);
         // }
         // export_raw('test.txt', JSON.stringify(m));
-
-
     },
     forward(){
         actionManager.forward();
@@ -145,6 +78,7 @@ let toolAction={
         let c=scene.getConnectCommand();
         c=c.reverse();//倒序
 
+        console.log(c);
         let html="";
         if(c.length>0){
             for(let i=0;i<c.length;i++){
@@ -167,7 +101,7 @@ let toolAction={
         if(localStorage.getItem("wjname")){
             let data="compile&&"+$('#ress').val()+"&&"+localStorage.getItem("wjname");
             console.log(data);
-            $.get("http://192.168.9.159:8888/"+data,function (err, result) {})
+            $.get("http://127.0.0.1:8888/"+data,function (err, result) {})
         }
         // if(c.length>0){
         //     $("#dmq").html("<p>"+c.join("<br>")+"</p>");
@@ -194,7 +128,7 @@ let toolAction={
             //             }
             //         }
             // })
-            $.get("http://192.168.9.159:8888/"+data,function (err, result) {
+            $.get("http://127.0.0.1:8888/"+data,function (err, result) {
                 console.log(err);
                 console.log(result);
                 $("#rzmain").html(err.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, ' '))

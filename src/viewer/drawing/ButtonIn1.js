@@ -4,10 +4,10 @@ import Vector2 from "../math/Vector2";
 import ImgMatrial from "../materials/ImgMaterial";
 import inpng from "../../images/in.png";
 import Bezier from "../math/Bezier";
-class ButtonIn extends BaseObject{
+class ButtonIn1 extends BaseObject{
     constructor(position){
         super();
-        this.type="input";
+        this.type="input1";
         this.position=position?position:new Vector2();
         this.path=new RectBoundPath();
         this.path.radius=3;
@@ -118,4 +118,4 @@ class ButtonIn extends BaseObject{
         // this.lasts.length=0;
     }
 }
-export default ButtonIn;
+export default ButtonIn1;
